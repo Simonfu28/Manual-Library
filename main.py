@@ -153,9 +153,9 @@ class Results(QtWidgets.QDialog):
                 dirOpen(t)
         except FileNotFoundError:
             warn('Cannot open file: File not found')
-
-        self.change.setChecked(False)
-        self.no.setChecked(True)
+        finally:
+            self.change.setChecked(False)
+            self.no.setChecked(True)
 
     # enables making changes to the equipment
     def activateChange(self):
@@ -198,9 +198,10 @@ class Results(QtWidgets.QDialog):
             warn('File cannot be changed: File not found')
         except PermissionError:
             warn('File cannot be changed: File is being used by another process')
+        finally:
+            self.input.clear()
+            self.location.clear()
 
-        self.input.clear()
-        self.location.clear()
         self.close()
 
 
