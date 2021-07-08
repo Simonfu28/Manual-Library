@@ -1,7 +1,6 @@
 import os
 import sys
 import glob
-import Config
 import PyQt5
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
 from configparser import ConfigParser
@@ -17,6 +16,7 @@ class ManualLib(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(ManualLib, self).__init__(parent)   # call inherited class
         uic.loadUi('ManualLib.ui', self)    # Loads .ui file
+        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
         buttonBox = QtWidgets.QDialogButtonBox(self)   # Reference Y/N button click
         buttonBox.accepted.connect(self.accept)
@@ -84,16 +84,25 @@ class New(QtWidgets.QDialog):
 
     # creates new directory
     def accept(self):
-        s = path + self.Input.text()
-        mkDir(s)
+        if self.Input.text() != '':
+            s = path + self.Input.text()
+            try:
+                mkDir(s)
 
-        if self.yes.isChecked() is True:
-            t = self.location.text()
-            newTag(t, s)
-        else:
-            t = "digital"
-            newTag(t, s)
-        self.close()
+                if self.yes.isChecked() is True:
+                    t = self.location.text()
+                    newTag(t, s)
+                else:
+                    t = "digital"
+                    newTag(t, s)
+            except FileNotFoundError:
+                warn('File cannot be changed: File not found')
+            except PermissionError:
+                warn('File cannot be changed: File is being used by another process')
+
+            self.Input.clear()
+            self.location.clear()
+            self.close()
 
     # activates physical location input bar
     def activeInput(self):
@@ -130,17 +139,21 @@ class Results(QtWidgets.QDialog):
 
     # displays the locations and folder of the manuals
     def display(self):
-        t = path+filename+"tag.txt"
-        s = readLocation(t)
-        if s == "digital":
-            # print("s")
-            t = filename
-            self.results.setText("Digital Manuals Only")
-            dirOpen(t)
-        else:
-            self.results.setText("Physical Manual Exists at: " + s)
-            t = filename
-            dirOpen(t)
+        try:
+            t = path+filename+"tag.txt"
+            s = readLocation(t)
+            if s == "digital":
+                # print("s")
+                t = filename
+                self.results.setText("Digital Manuals Only")
+                dirOpen(t)
+            else:
+                self.results.setText("Physical Manual Exists at: " + s)
+                t = filename
+                dirOpen(t)
+        except FileNotFoundError:
+            warn('Cannot open file: File not found')
+
         self.change.setChecked(False)
         self.no.setChecked(True)
 
@@ -169,16 +182,25 @@ class Results(QtWidgets.QDialog):
         n = self.input.text()
         n = path + n
         c = path + filename
-        rename(c, n)
-        s = n + "\\tag.txt"
-        if self.yes.isChecked() is True:
-            os.remove(s)
-            t = self.location.text()
-            newTag(t, n)
-        else:
-            os.remove(s)
-            t = "digital"
-            newTag(t, n)
+        try:
+            if n != '':
+                rename(c, n)
+            s = n + "\\tag.txt"
+            if self.yes.isChecked() is True:
+                os.remove(s)
+                t = self.location.text()
+                newTag(t, n)
+            else:
+                os.remove(s)
+                t = "digital"
+                newTag(t, n)
+        except FileNotFoundError:
+            warn('File cannot be changed: File not found')
+        except PermissionError:
+            warn('File cannot be changed: File is being used by another process')
+
+        self.input.clear()
+        self.location.clear()
         self.close()
 
 
@@ -192,7 +214,7 @@ class Settings(QtWidgets.QDialog):
         #self.changePath.clicked.connect(self.open)
 
     #def open(self):
-        #open("Config.py", "r")
+        #open("config.cfg", "r")
 
 
 # opens directory for existing equipment
@@ -246,6 +268,16 @@ def readLocation(location):
 def rename(current, new):
     os.rename(current, new)
     os.startfile(new)
+
+
+def warn(str):
+    msg = QtWidgets.QMessageBox()
+    msg.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+    msg.setIcon(QtWidgets.QMessageBox.Warning)
+    msg.setText(str)
+    msg.setWindowTitle("Warning")
+    msg.setStandardButtons(QtWidgets.QMessageBox.Ok | QtWidgets.QMessageBox.Cancel)
+    msg.exec_()
 
 
 def main():
