@@ -3,8 +3,8 @@ import sys
 import glob
 import PyQt5
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
-import qtmodern.styles
-import qtmodern.windows
+# import qtmodern.styles
+# import qtmodern.windows
 from configparser import ConfigParser
 
 config = ConfigParser()
@@ -286,9 +286,9 @@ def warn(str):
 def main():
     app = QtWidgets.QApplication(sys.argv)
     window = ManualLib()
-    qtmodern.styles.light(app)
-    mw = qtmodern.windows.ModernWindow(window)
-    mw.show()
+    # qtmodern.styles.light(app)
+    # mw = qtmodern.windows.ModernWindow(window)
+    # mw.show()
     app.exec_()
 
 
