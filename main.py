@@ -3,8 +3,8 @@ import sys
 import glob
 import PyQt5
 from PyQt5 import QtWidgets, uic, QtGui, QtCore
-# import qtmodern.styles
-# import qtmodern.windows
+import qtmodern.styles
+import qtmodern.windows
 from configparser import ConfigParser
 
 config = ConfigParser()
@@ -18,7 +18,7 @@ class ManualLib(QtWidgets.QDialog):
     def __init__(self, parent=None):
         super(ManualLib, self).__init__(parent)   # call inherited class
         uic.loadUi('ManualLib.ui', self)    # Loads .ui file
-        self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+        # self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
         buttonBox = QtWidgets.QDialogButtonBox(self)   # Reference Y/N button click
         buttonBox.accepted.connect(self.accept)
@@ -59,8 +59,8 @@ class ManualLib(QtWidgets.QDialog):
         t = self.list.currentItem().text()
         filename = t
         if t != "*** Add New ***":
-            self.result.show()
             self.result.display()
+            self.result.show()
         else:
             self.new.show()
 
@@ -150,7 +150,7 @@ class Results(QtWidgets.QDialog):
                 self.results.setText("Digital Manuals Only")
                 dirOpen(t)
             else:
-                self.results.setText("Physical Manual Exists at: " + s)
+                self.results.setText("Physical copy at: " + s)
                 t = filename
                 dirOpen(t)
         except FileNotFoundError:
@@ -214,10 +214,10 @@ class Settings(QtWidgets.QDialog):
         uic.loadUi('Settings.ui', self)
 
         self.changePath = self.findChild(QtWidgets.QToolButton, "toolButton")
-        #self.changePath.clicked.connect(self.open)
+        # self.changePath.clicked.connect(self.open)
 
-    #def open(self):
-        #open("config.cfg", "r")
+    # def open(self):
+        # open("config.cfg", "r")
 
 
 # opens directory for existing equipment
@@ -286,9 +286,9 @@ def warn(str):
 def main():
     app = QtWidgets.QApplication(sys.argv)
     window = ManualLib()
-    # qtmodern.styles.light(app)
-    # mw = qtmodern.windows.ModernWindow(window)
-    # mw.show()
+    qtmodern.styles.light(app)
+    mw = qtmodern.windows.ModernWindow(window)
+    mw.show()
     app.exec_()
 
 
