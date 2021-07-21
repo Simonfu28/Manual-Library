@@ -866,9 +866,9 @@ class Ui_MainWindow(object):
         self.frame_displayTitle = QFrame(self.displayWidget)
         self.frame_displayTitle.setObjectName(u"frame_displayTitle")
         self.frame_displayTitle.setMaximumSize(QSize(900, 35))
-        self.frame_displayTitle.setFrameShape(QFrame.NoFrame)
-        self.frame_displayTitle.setFrameShadow(QFrame.Raised)
-        self.frame_displayTitle.setStyleSheet(u"background-color: rgb(39, 44, 54);")
+        self.frame_displayTitle.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
+                                                   "border-radius: 5px;\n"
+                                                   "")
         self.displayTitle_verticalLayout = QVBoxLayout(self.frame_displayTitle)
         self.displayTitle_verticalLayout.setObjectName(u"displayTitle_verticalLayout")
         self.displayTitle = QLabel(self.frame_displayTitle)
@@ -883,13 +883,17 @@ class Ui_MainWindow(object):
         self.frame_displayResults.setMaximumSize(QSize(900, 700))
         self.frame_displayResults.setFrameShape(QFrame.NoFrame)
         self.frame_displayResults.setFrameShadow(QFrame.Raised)
-        self.frame_displayResults.setStyleSheet(u"background-color: rgb(39, 44, 54);")
+        self.frame_displayResults.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
+                                              "border-radius: 5px;\n"
+                                              "")
         self.displayResults_gridLayout = QGridLayout(self.frame_displayResults)
         self.displayResults_gridLayout.setObjectName(u"displayResults_gridLayout")
 
         self.frame_displayLocation = QFrame(self.frame_displayResults)
         self.frame_displayLocation.setObjectName(u"frame_displayLocation")
-        self.frame_displayLocation.setStyleSheet(u"background-color: rgb(39, 44, 54);")
+        self.frame_displayLocation.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
+                                                "border-radius: 5px;\n"
+                                                "")
         self.displayLocation_verticalLayout = QVBoxLayout(self.frame_displayLocation)
         self.displayLocation_verticalLayout.setObjectName(u"displayLocation_verticalLayout")
         self.displayLocation = QLabel(self.frame_displayLocation)
@@ -992,7 +996,9 @@ class Ui_MainWindow(object):
         self.frame_edit.setObjectName(u"frame_edit")
         self.frame_edit.setMinimumSize(QSize(110, 270))
         self.frame_edit.setMaximumSize(QSize(900, 270))
-        self.frame_edit.setStyleSheet(u"background-color: rgb(39, 44, 54);")
+        self.frame_edit.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
+                                                 "border-radius: 5px;\n"
+                                                 "")
         self.edit_verticalLayout = QVBoxLayout(self.frame_edit)
         self.edit_verticalLayout.setObjectName(u"edit_verticalLayout")
 
@@ -1118,6 +1124,161 @@ class Ui_MainWindow(object):
         self.newWidget_verticalLayout = QVBoxLayout(self.newWidget)
         self.newWidget_verticalLayout.setObjectName(u"newWidget_verticalLayout")
 
+        self.frame_newTitle = QFrame(self.newWidget)
+        self.frame_newTitle.setObjectName(u"newTitle")
+        self.frame_newTitle.setFixedSize(QSize(900, 40))
+        self.frame_newTitle.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
+                                                 "border-radius: 5px;\n"
+                                                 "")
+        self.newTitle_verticalLayout = QVBoxLayout(self.frame_newTitle)
+        self.newTitle_verticalLayout.setObjectName(u"newTitle_verticalLayout")
+        self.newTitle = QLabel(self.frame_newTitle)
+        self.newTitle.setObjectName(u"newTitle")
+        self.newTitle.setFont(font1)
+        self.newTitle.setStyleSheet(u"")
+        self.newTitle_verticalLayout.addWidget(self.newTitle)
+
+        self.frame_newEdit = QFrame()
+        self.frame_newEdit.setObjectName(u"newEdit")
+        self.frame_newEdit.setMinimumSize(QSize(110, 100))
+        self.frame_newEdit.setMaximumSize(QSize(900, 250))
+        self.frame_newEdit.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
+                                                 "border-radius: 5px;\n"
+                                                 "")
+        self.newEdit_grid = QGridLayout(self.frame_newEdit)
+        self.newEdit_grid.setObjectName(u"newEdit_grid")
+
+        self.newEquipment = QLineEdit(self.frame_newEdit)
+        self.newEquipment.setObjectName(u"newEquipment")
+        self.newEquipment.setMinimumSize(QSize(300, 35))
+        self.newEquipment.setMaximumSize(QSize(300, 35))
+        self.newEquipment.setStyleSheet(u"QLineEdit {\n"
+                                    "	background-color: rgb(27, 29, 35);\n"
+                                    "	border-radius: 5px;\n"
+                                    "	border: 2px solid rgb(27, 29, 35);\n"
+                                    "	padding-left: 10px;\n"
+                                    "}\n"
+                                    "QLineEdit:hover {\n"
+                                    "	border: 2px solid rgb(64, 71, 88);\n"
+                                    "}\n"
+                                    "QLineEdit:focus {\n"
+                                    "	border: 2px solid rgb(91, 101, 124);\n"
+                                    "}")
+
+        self.newCopy = QLabel(self.frame_newEdit)
+        self.newCopy.setObjectName(u"newCopy")
+        self.newCopy.setFont(font3)
+        self.newCopy_yes = QRadioButton(self.frame_newEdit)
+        self.newCopy_yes.setObjectName(u"newCopy_yes")
+        self.newCopy_no = QRadioButton(self.frame_newEdit)
+        self.newCopy_no.setObjectName(u"newCopy_no")
+        self.newCopy_yes.toggled.connect(self.activenewInput)
+        self.newCopy_no.toggled.connect(self.activenewInput)
+        self.newLocationGroup = QButtonGroup()
+
+        self.newLocation = QLineEdit(self.frame_newEdit)
+        self.newLocation.setObjectName(u"newLocation")
+        self.newLocation.setMinimumSize(QSize(300, 35))
+        self.newLocation.setMaximumSize(QSize(300, 35))
+        self.newLocation.setStyleSheet(u"QLineEdit {\n"
+                                    "	background-color: rgb(27, 29, 35);\n"
+                                    "	border-radius: 5px;\n"
+                                    "	border: 2px solid rgb(27, 29, 35);\n"
+                                    "	padding-left: 10px;\n"
+                                    "}\n"
+                                    "QLineEdit:hover {\n"
+                                    "	border: 2px solid rgb(64, 71, 88);\n"
+                                    "}\n"
+                                    "QLineEdit:disabled {\n"
+                                    "	background-color: rgb(44, 49, 60);\n"
+                                    "   border: 2px solid rgb(44, 49, 60);\n"
+                                    "}\n"
+                                    "QLineEdit:focus {\n"
+                                    "	border: 2px solid rgb(91, 101, 124);\n"
+                                    "}")
+        self.newLocation.setEnabled(False)
+        self.newEditConfirm_HLayout = QHBoxLayout()
+        self.newEditConfirm_HLayout.setObjectName(u"newEditConfirm_HLayout")
+        self.newEdit_confirmY = QPushButton()
+        self.newEdit_confirmY.setObjectName(u"newEdit_confirmY")
+        self.newEdit_confirmY.setFixedSize(QSize(120, 35))
+        self.newEdit_confirmY.setStyleSheet(u"QPushButton {\n"
+                                       "	border: 2px solid rgb(52, 59, 72);\n"
+                                       "	border-radius: 5px;	\n"
+                                       "	background-color: rgb(27, 29, 35);\n"
+                                       "}\n"
+                                       "QPushButton:hover {\n"
+                                       "	background-color: rgb(57, 65, 80);\n"
+                                       "	border: 2px solid rgb(61, 70, 86);\n"
+                                       "}\n"
+                                       "QPushButton:pressed {	\n"
+                                       "	background-color: rgb(35, 40, 49);\n"
+                                       "	border: 2px solid rgb(43, 50, 61);\n"
+                                       "}")
+        icon8 = QIcon()
+        icon8.addFile(u":/16x16/icons/16x16/cil-save.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.newEdit_confirmY.setIcon(icon8)
+        self.newEdit_confirmN = QPushButton()
+        self.newEdit_confirmN.setObjectName(u"newEdit_confirmN")
+        self.newEdit_confirmN.setFixedSize(QSize(120, 35))
+        self.newEdit_confirmN.setStyleSheet(u"QPushButton {\n"
+                                            "	border: 2px solid rgb(52, 59, 72);\n"
+                                            "	border-radius: 5px;	\n"
+                                            "	background-color: rgb(27, 29, 35);\n"
+                                            "}\n"
+                                            "QPushButton:hover {\n"
+                                            "	background-color: rgb(57, 65, 80);\n"
+                                            "	border: 2px solid rgb(61, 70, 86);\n"
+                                            "}\n"
+                                            "QPushButton:pressed {	\n"
+                                            "	background-color: rgb(35, 40, 49);\n"
+                                            "	border: 2px solid rgb(43, 50, 61);\n"
+                                            "}")
+        icon9 = QIcon()
+        icon9.addFile(u":/20x20/icons/20x20/cil-trash.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.newEdit_confirmN.setIcon(icon9)
+        self.newEdit_confirmO = QPushButton()
+        self.newEdit_confirmO.setObjectName(u"newEdit_confirmO")
+        self.newEdit_confirmO.setFixedSize(QSize(120, 35))
+        self.newEdit_confirmO.setStyleSheet(u"QPushButton {\n"
+                                            "	border: 2px solid rgb(52, 59, 72);\n"
+                                            "	border-radius: 5px;	\n"
+                                            "	background-color: rgb(27, 29, 35);\n"
+                                            "}\n"
+                                            "QPushButton:hover {\n"
+                                            "	background-color: rgb(57, 65, 80);\n"
+                                            "	border: 2px solid rgb(61, 70, 86);\n"
+                                            "}\n"
+                                            "QPushButton:pressed {	\n"
+                                            "	background-color: rgb(35, 40, 49);\n"
+                                            "	border: 2px solid rgb(43, 50, 61);\n"
+                                            "}")
+        icon10 = QIcon()
+        icon10.addFile(u":/16x16/icons/16x16/cil-folder-open.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.newEdit_confirmO.setIcon(icon10)
+
+        self.newEdit_confirmY.clicked.connect(self.newSave)
+        self.newEdit_confirmO.clicked.connect(self.newSaveOpen)
+        self.newEdit_confirmN.clicked.connect(self.newDiscard)
+
+
+        self.newEditConfirm_HLayout.addWidget(self.newEdit_confirmY)
+        self.newEditConfirm_HLayout.addWidget(self.newEdit_confirmO)
+        self.newEditConfirm_HLayout.addWidget(self.newEdit_confirmN)
+
+        self.newEdit_grid.setVerticalSpacing(15)
+        self.newEdit_grid.setRowMinimumHeight(0, 60)
+        self.newEdit_grid.addWidget(self.newEquipment, 0, 0, 1, 1, alignment=Qt.AlignLeft)
+        self.newEdit_grid.addWidget(self.newCopy, 1, 0, 1, 1, alignment=Qt.AlignLeft)
+        self.newEdit_grid.addWidget(self.newCopy_yes, 2, 0, 1, 1, alignment=Qt.AlignLeft)
+        self.newEdit_grid.addWidget(self.newCopy_no, 2, 0, 1, 1, alignment=Qt.AlignCenter)
+        self.newEdit_grid.addWidget(self.newLocation, 3, 0, 1, 1, alignment=Qt.AlignLeft)
+        self.newEdit_grid.addLayout(self.newEditConfirm_HLayout, 4, 1, 1, 1, alignment=Qt.AlignRight)
+
+        self.newWidget_verticalLayout.addSpacing(80)
+        self.newWidget_verticalLayout.addWidget(self.frame_newTitle)
+        self.newWidget_verticalLayout.addWidget(self.frame_newEdit)
+        self.newWidget_verticalLayout.addSpacing(100)
 
         ################################# END #################################
 
@@ -1261,7 +1422,7 @@ class Ui_MainWindow(object):
 
         self.resultsLabel.setText(QCoreApplication.translate("MainWindow", "Results", None))
 
-        self.displayTitle.setText(QCoreApplication.translate("MainWindow", "Search Results:", None))
+        self.displayTitle.setText(QCoreApplication.translate("MainWindow", "Search Results", None))
         self.displayLink.setText(QCoreApplication.translate("MainWindow", u"Open Directory", None))
         self.displayLink.setDescription(QCoreApplication.translate("MainWindow", u"Opens digital manuals\n(if exists)", None))
         self.checkout.setText(QCoreApplication.translate("MainWindow", u"Checkout", None))
@@ -1274,6 +1435,16 @@ class Ui_MainWindow(object):
         self.location_no.setText(QCoreApplication.translate("MainWindow", u"No", None))
         self.location.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Manual Location", None))
         self.edit_button.setText(QCoreApplication.translate("MainWindow", u"Save", None))
+
+        self.newTitle.setText(QCoreApplication.translate('MainWindow', "Add New Manual", None))
+        self.newEquipment.setPlaceholderText(QCoreApplication.translate('MainWindow', "New Equipment Name", None))
+        self.newCopy.setText(QCoreApplication.translate('MainWindow', "Physical Copy?", None))
+        self.newCopy_yes.setText(QCoreApplication.translate('MainWindow', "Yes", None))
+        self.newCopy_no.setText(QCoreApplication.translate('MainWindow', "No", None))
+        self.newLocation.setPlaceholderText(QCoreApplication.translate("MainWindow", "Location", None))
+        self.newEdit_confirmY.setText(QCoreApplication.translate("MainWindow", "Save", None))
+        self.newEdit_confirmO.setText(QCoreApplication.translate("MainWindow", "Save and Open", None))
+        self.newEdit_confirmN.setText(QCoreApplication.translate("MainWindow", "Discard", None))
 
 
     # retranslateUi
@@ -1321,6 +1492,19 @@ class Ui_MainWindow(object):
         else:
             self.stackedWidget.setCurrentIndex(0)
 
+    def newResult(self, info):  # prints the new equipment on the results screen after saving
+        global filename
+        try:
+            t = info
+            filename = t
+            self.display()
+        except:
+            warn("UnknownError (new result)")
+        try:
+            self.checked_out()
+        except:
+            warn("Unknown Error (checkout.txt)")
+
     def openDir(self):  # opens directory of the manual
         try:
             t = path + filename + "tag.txt"
@@ -1334,14 +1518,12 @@ class Ui_MainWindow(object):
         t = path + filename + "checkout.txt"
         if os.path.isfile(t) is False:
             f = open(t, "w")
-            f.write("available")
+            f.write("available,0")
             f.close()
-            v = "available"
-        else:
-            f = open(t, "r")
-            v = f.read()
-            f.close()
-            v = v.split(",")
+        f = open(t, "r")
+        v = f.read()
+        f.close()
+        v = v.split(",")
         if v[0] == "available" or "":
             self.checkout.setEnabled(True)
             self.Return.setEnabled(False)
@@ -1397,13 +1579,19 @@ class Ui_MainWindow(object):
             self.edit_button.setEnabled(False)
             self.location.setEnabled(False)
 
-    def activeInput(self):   # activates physical location input bar
+    def activeInput(self):   # activates physical location input bar in modify equipment tab
         if self.location_yes.isChecked() is True:
             self.location.setEnabled(True)
         else:
             self.location.setEnabled(False)
 
-    def save(self):
+    def activenewInput(self):  # activates physical location input bar in new tab
+        if self.newCopy_yes.isChecked() is True:
+            self.newLocation.setEnabled(True)
+        else:
+            self.newLocation.setEnabled(False)
+
+    def save(self): # saves the changes to the equipment
         n = self.nameEdit.text()
         n = path + n
         c = path + filename
@@ -1427,6 +1615,57 @@ class Ui_MainWindow(object):
             self.nameEdit.clear()
             self.location.clear()
 
+    def newSave(self):    # creates new equipment directory
+        s = path + self.newEquipment.text()
+        info = self.newEquipment.text()
+        info = info+"\\"
+        try:
+            mkDir(s, False)
+            if self.newCopy_yes.isChecked() is True:
+                t = self.newLocation.text()
+                newTag(t, s)
+            else:
+                t = "digital"
+                newTag(t, s)
+            self.newResult(info)
+            self.newEquipment.clear()
+            self.newLocation.clear()
+        except FileNotFoundError:
+            warn('File cannot be changed: File not found')
+        except PermissionError:
+            warn('File cannot be changed: File is being used by another process')
+        except FileExistsError:
+            warn('File cannot be changed: File already exists')
+
+    def newSaveOpen(self):    # creates new equipment directory and opens it
+        s = path + self.newEquipment.text()
+        info = self.newEquipment.text()
+        info = info+"\\"
+        try:
+            mkDir(s, True)
+            if self.newCopy_yes.isChecked() is True:
+                t = self.newLocation.text()
+                newTag(t, s)
+            else:
+                t = "digital"
+                newTag(t, s)
+            self.newResult(info)
+            self.newEquipment.clear()
+            self.newLocation.clear()
+        except FileNotFoundError:
+            warn('File cannot be changed: File not found')
+        except PermissionError:
+            warn('File cannot be changed: File is being used by another process')
+        except FileExistsError:
+            warn('File cannot be changed: File already exists')
+
+    def newDiscard(self):   # discards entry on new equipment tab
+        self.newEquipment.clear()
+        self.newLocation.clear()
+
+
+
+
 
 
 ############################# FUNCTIONS #############################
@@ -1445,10 +1684,11 @@ def dirOpen(file):  # opens directory for existing equipment
         return False
 
 
-def mkDir(file):  # makes a new directory for new equipment
+def mkDir(file, open):  # makes a new directory for new equipment
     s = file
     os.mkdir(s)
-    os.startfile(s)
+    if open is True:
+        os.startfile(s)
 
 
 def newTag(data, file):  # creates a new location tag for new equipment
