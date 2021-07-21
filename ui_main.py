@@ -856,6 +856,7 @@ class Ui_MainWindow(object):
         self.searchWidget_verticalLayout.addWidget(self.frame_searchResults)
         ################################# END #################################
 
+
         ################################# DISPLAY #################################
         self.displayWidget = QWidget()
         self.displayWidget.setObjectName(u"displayWidget")
@@ -1089,7 +1090,7 @@ class Ui_MainWindow(object):
         icon5.addFile(u":/16x16/icons/16x16/cil-save.png", QSize(), QIcon.Normal, QIcon.Off)
         self.edit_button.setIcon(icon5)
         self.edit_button.setEnabled(False)
-        #self.edit_button.clicked.connect(self.)
+        self.edit_button.clicked.connect(self.save)
 
 
         self.location_gridLayout.addWidget(self.nameEdit, 0, 0, 1, 1, alignment=Qt.AlignLeft)
@@ -1108,6 +1109,10 @@ class Ui_MainWindow(object):
         self.displayWidget_verticalLayout.addWidget(self.frame_displayTitle)
         self.displayWidget_verticalLayout.addWidget(self.frame_displayResults)
         self.displayWidget_verticalLayout.addWidget(self.frame_edit)
+        ################################# END #################################
+
+
+        ################################# DISPLAY #################################
 
         ################################# END #################################
 
@@ -1387,6 +1392,30 @@ class Ui_MainWindow(object):
             self.location.setEnabled(True)
         else:
             self.location.setEnabled(False)
+
+    def save(self):
+        n = self.nameEdit.text()
+        n = path + n
+        c = path + filename
+        try:
+            if n != '':
+                rename(c, n)
+            s = n + "\\tag.txt"
+            if self.location_yes.isChecked() is True:
+                os.remove(s)
+                t = self.location.text()
+                newTag(t, n)
+            else:
+                os.remove(s)
+                t = "digital"
+                newTag(t, n)
+        except FileNotFoundError:
+            warn('File cannot be changed: File not found')
+        except PermissionError:
+            warn('File cannot be changed: File is being used by another process')
+        finally:
+            self.nameEdit.clear()
+            self.location.clear()
 
 
 
