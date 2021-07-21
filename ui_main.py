@@ -857,7 +857,7 @@ class Ui_MainWindow(object):
         ################################# END #################################
 
 
-        ################################# DISPLAY #################################
+        ################################# RESULTS DISPLAY #################################
         self.displayWidget = QWidget()
         self.displayWidget.setObjectName(u"displayWidget")
         self.displayWidget_verticalLayout = QVBoxLayout(self.displayWidget)
@@ -1118,7 +1118,7 @@ class Ui_MainWindow(object):
         ################################# END #################################
 
 
-        ################################# NEW #################################
+        ################################# ADD NEW #################################
         self.newWidget = QWidget()
         self.newWidget.setObjectName(u"newWidget")
         self.newWidget_verticalLayout = QVBoxLayout(self.newWidget)
@@ -1126,7 +1126,8 @@ class Ui_MainWindow(object):
 
         self.frame_newTitle = QFrame(self.newWidget)
         self.frame_newTitle.setObjectName(u"newTitle")
-        self.frame_newTitle.setFixedSize(QSize(900, 40))
+        self.frame_newTitle.setMinimumSize(QSize(110, 40))
+        self.frame_newTitle.setMaximumSize(QSize(900, 60))
         self.frame_newTitle.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
                                                  "border-radius: 5px;\n"
                                                  "")
@@ -1282,6 +1283,68 @@ class Ui_MainWindow(object):
 
         ################################# END #################################
 
+
+        ################################# USER #################################
+        self.userWidget = QWidget()
+        self.userWidget.setObjectName(u"userWidget")
+        self.userWidget_verticalLayout = QVBoxLayout(self.userWidget)
+        self.userWidget_verticalLayout.setObjectName(u"userWidget_verticalLayout")
+
+        self.frame_userTitle = QFrame()
+        self.frame_userTitle.setObjectName(u"frame_userTitle")
+        self.frame_userTitle.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
+                                                 "border-radius: 5px;\n"
+                                                 "")
+        self.userTitle_HLayout = QHBoxLayout(self.frame_userTitle)
+        self.userTitle_HLayout.setObjectName(u"userTitle_HLayout")
+
+        self.user_icon = QLabel(self.frame_userTitle)
+        self.user_icon.setObjectName(u"user_icon")
+        sizePolicy5 = QSizePolicy(QSizePolicy.Maximum, QSizePolicy.Maximum)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.user_icon.sizePolicy().hasHeightForWidth())
+        self.user_icon.setSizePolicy(sizePolicy5)
+        self.user_icon.setMinimumSize(QSize(70, 70))
+        self.user_icon.setMaximumSize(QSize(70, 70))
+        self.user_icon.setStyleSheet(u"QLabel {\n"
+                                           "	border-radius: 35px;\n"
+                                           "	background-color: rgb(44, 49, 60);\n"
+                                           "	border: 5px solid rgb(27, 29, 35);\n"
+                                           "	background-position: center;\n"
+                                           "	background-repeat: no-repeat;\n"
+                                           "}")
+        icon11 = QPixmap(u":/20x20/icons/20x20/cil-user.png")
+        self.user_icon.setPixmap(icon11)
+        self.user_icon.setAlignment(Qt.AlignCenter)
+
+        self.user_name = QLabel(self.frame_userTitle)
+        self.user_icon.setObjectName(u"user_name")
+        font9 = QFont()
+        font9.setFamily(u"Segoe UI")
+        font9.setPointSize(20)
+        self.user_name.setFont(font9)
+        self.user_name.setStyleSheet(u"")
+
+        self.userTitle_HLayout.addWidget(self.user_icon)
+        self.userTitle_HLayout.addSpacing(15)
+        self.userTitle_HLayout.addWidget(self.user_name)
+
+        self.frame_userCheckedout = QFrame()
+        self.frame_userCheckedout.setObjectName(u"frame_userCheckedout")
+        self.frame_userCheckedout.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
+                                                 "border-radius: 5px;\n"
+                                                 "")
+        self.userCheckout_Grid = QGridLayout(self.frame_userCheckedout)
+        self.userCheckout_Grid.setObjectName(u"frame_userCheckedout")
+
+
+        self.userWidget_verticalLayout.addWidget(self.frame_userTitle)
+
+
+        ################################# END #################################
+
+
         palette1 = QPalette()
         palette1.setBrush(QPalette.Active, QPalette.WindowText, brush6)
         brush15 = QBrush(QColor(39, 44, 54, 255))
@@ -1322,6 +1385,7 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.searchWidget)
         self.stackedWidget.addWidget(self.displayWidget)
         self.stackedWidget.addWidget(self.newWidget)
+        self.stackedWidget.addWidget(self.userWidget)
         self.verticalLayout_9.addWidget(self.stackedWidget)
 
         self.verticalLayout_4.addWidget(self.frame_content)
@@ -1446,6 +1510,9 @@ class Ui_MainWindow(object):
         self.newEdit_confirmO.setText(QCoreApplication.translate("MainWindow", "Save and Open", None))
         self.newEdit_confirmN.setText(QCoreApplication.translate("MainWindow", "Discard", None))
 
+        c = getpass.getuser()
+        self.user_name.setText(QCoreApplication.translate("MainWindow", c, None))
+
 
     # retranslateUi
 
@@ -1482,6 +1549,7 @@ class Ui_MainWindow(object):
         global filename
         t = self.resultList.currentItem().text()
         filename = t
+        self.editEnable.setChecked(False)
         if t != "*** Add New ***":
             self.stackedWidget.setCurrentIndex(1)
             self.display()
@@ -1490,7 +1558,7 @@ class Ui_MainWindow(object):
             except:
                 warn("Unknown Error (checkout.txt)")
         else:
-            self.stackedWidget.setCurrentIndex(0)
+            self.stackedWidget.setCurrentIndex(2)
 
     def newResult(self, info):  # prints the new equipment on the results screen after saving
         global filename

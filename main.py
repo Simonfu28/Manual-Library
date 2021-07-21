@@ -174,7 +174,7 @@ class MainWindow(QMainWindow):
 
         # PAGE USER
         if btnWidget.objectName() == "btn_user":
-            self.ui.stackedWidget.setCurrentWidget(self.ui.searchWidget)
+            self.ui.stackedWidget.setCurrentWidget(self.ui.userWidget)
             UIFunctions.resetStyle(self, "btn_user")
             UIFunctions.labelPage(self, "USER")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
