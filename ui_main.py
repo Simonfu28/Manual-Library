@@ -1112,7 +1112,12 @@ class Ui_MainWindow(object):
         ################################# END #################################
 
 
-        ################################# DISPLAY #################################
+        ################################# NEW #################################
+        self.newWidget = QWidget()
+        self.newWidget.setObjectName(u"newWidget")
+        self.newWidget_verticalLayout = QVBoxLayout(self.newWidget)
+        self.newWidget_verticalLayout.setObjectName(u"newWidget_verticalLayout")
+
 
         ################################# END #################################
 
@@ -1155,6 +1160,7 @@ class Ui_MainWindow(object):
 
         self.stackedWidget.addWidget(self.searchWidget)
         self.stackedWidget.addWidget(self.displayWidget)
+        self.stackedWidget.addWidget(self.newWidget)
         self.verticalLayout_9.addWidget(self.stackedWidget)
 
         self.verticalLayout_4.addWidget(self.frame_content)
@@ -1381,11 +1387,13 @@ class Ui_MainWindow(object):
             self.location_yes.setEnabled(True)
             self.location_no.setEnabled(True)
             self.edit_button.setEnabled(True)
+            self.activeInput()
         else:
             self.nameEdit.setEnabled(False)
             self.location_yes.setEnabled(False)
             self.location_no.setEnabled(False)
             self.edit_button.setEnabled(False)
+            self.location.setEnabled(False)
 
     def activeInput(self):   # activates physical location input bar
         if self.location_yes.isChecked() is True:

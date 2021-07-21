@@ -11,6 +11,7 @@ from PySide2.QtCore import (QCoreApplication, QPropertyAnimation, QDate, QDateTi
 from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter, QPixmap, QRadialGradient)
 from PySide2.QtWidgets import *
 from configparser import ConfigParser
+import getpass
 
 
 config = ConfigParser()
@@ -73,7 +74,14 @@ class MainWindow(QMainWindow):
         ## ==> END ##
 
         ## USER ICON ==> SHOW HIDE
-        UIFunctions.userIcon(self, "", "", True)
+        try:
+            username = getpass.getuser()
+            c = username.split(".")
+            initial = c[0][0] + c[1][0]
+            initial = initial.upper()
+            UIFunctions.userIcon(self, initial, "", True)
+        except:
+            UIFunctions.userIcon(self, "", "", False)
         ## ==> END ##
 
         ## PRINT PATH AT TOP OF WINDOW
@@ -159,7 +167,7 @@ class MainWindow(QMainWindow):
 
         # PAGE ADD
         if btnWidget.objectName() == "btn_add":
-            self.ui.stackedWidget.setCurrentWidget(self.ui.searchWidget)
+            self.ui.stackedWidget.setCurrentWidget(self.ui.newWidget)
             UIFunctions.resetStyle(self, "btn_add")
             UIFunctions.labelPage(self, "ADD")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
