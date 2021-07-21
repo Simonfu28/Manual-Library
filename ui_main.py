@@ -1341,40 +1341,42 @@ class Ui_MainWindow(object):
             f = open(t, "r")
             v = f.read()
             f.close()
-        if v == "available" or "":
+            v = v.split(",")
+        if v[0] == "available" or "":
             self.checkout.setEnabled(True)
             self.Return.setEnabled(False)
             self.checkout_available.setText("Manual is available")
         else:
             self.checkout.setEnabled(False)
             self.Return.setEnabled(True)
-            self.checkout_available.setText(v)
+            c = "Checked out by " + v[0] + " on " + v[1]
+            self.checkout_available.setText(c)
 
     def checkoutManual(self): # checks the manual out
         try:
             username = getpass.getuser()
-            v = "Checked out by " + username + " on: "
         except:
             warn("Unknown Error (user)")
-            v = ""
+            username = ""
         try:
             ct = datetime.datetime.now().date()
-            v = v + str(ct)
+            ct = str(ct)
         except:
             warn("Unknown Error (time)")
         try:
             t = path + filename + "checkout.txt"
-            checkout(v, t)
+            checkout(username, ct, t)
             self.checkout.setEnabled(False)
             self.Return.setEnabled(True)
-            self.checkout_available.setText(v)
+            c = "Checked out by " + username + " on " + ct
+            self.checkout_available.setText(c)
         except:
             warn("Unknown Error (checkout)")    # s
 
     def returnManual(self):     # returns the manual
         try:
             t = path + filename + "checkout.txt"
-            checkout("available", t)
+            checkout("available", "", t)
             self.checkout.setEnabled(True)
             self.Return.setEnabled(False)
             self.checkout_available.setText("Manual is available")
@@ -1460,9 +1462,10 @@ def newTag(data, file):  # creates a new location tag for new equipment
         return True
 
 
-def checkout(data, file):   # edits a checkout tag file
+def checkout(username, time, file):   # edits a checkout tag file
     f = open(file, "w")
-    f.write(data)
+    v = username + "," + time
+    f.write(v)
     f.close()
 
 
