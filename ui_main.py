@@ -1280,7 +1280,6 @@ class Ui_MainWindow(object):
         self.newWidget_verticalLayout.addWidget(self.frame_newTitle)
         self.newWidget_verticalLayout.addWidget(self.frame_newEdit)
         self.newWidget_verticalLayout.addSpacing(100)
-
         ################################# END #################################
 
 
@@ -1575,10 +1574,14 @@ class Ui_MainWindow(object):
 
     def openDir(self):  # opens directory of the manual
         try:
-            t = path + filename + "tag.txt"
-            s = readLocation(t)
-            t = filename
-            dirOpen(t)
+            if self.searchInput.text() != "":
+                t = path + filename + "tag.txt"
+                s = readLocation(t)
+                t = filename
+                dirOpen(t, False)
+            else:
+                t = filename
+                dirOpen(t, True)
         except FileNotFoundError:
             warn('Cannot open file: File not found')
 
@@ -1737,7 +1740,7 @@ class Ui_MainWindow(object):
 
 
 ############################# FUNCTIONS #############################
-def dirOpen(file):  # opens directory for existing equipment
+def dirOpen(file, state):  # opens directory for existing equipment
     if file == "*** Add New ***":
         return True
     else:
@@ -1745,7 +1748,7 @@ def dirOpen(file):  # opens directory for existing equipment
         # print(s)
         os.startfile(s)
         tagPath = s + "\\tag.txt"
-        if os.path.isfile(tagPath) is False:
+        if os.path.isfile(tagPath) and state is False:
             # print(tagPath)
             with open(tagPath, 'w') as file:
                 file.write("digital")
