@@ -1337,9 +1337,34 @@ class Ui_MainWindow(object):
         self.userCheckout_Grid = QGridLayout(self.frame_userCheckedout)
         self.userCheckout_Grid.setObjectName(u"frame_userCheckedout")
 
+        self.checkedoutTitle = QLabel(self.frame_userCheckedout)
+        self.checkedoutTitle.setObjectName(u"checkedoutTitle")
+        self.checkedoutTitle.setFont(font1)
+        self.checkedoutTitle.setStyleSheet(u"")
+
+        self.checkedoutDisplay = QListWidget(self.frame_userCheckedout)
+        self.checkedoutDisplay.setObjectName(u"checkedoutDisplay")
+        self.checkedoutDisplay.setMinimumSize(QSize(750, 200))
+        self.checkedoutDisplay.setMaximumSize(QSize(750, 200))
+        self.checkedoutDisplay.setStyleSheet(u"QListWidget {\n"
+                                      "	background-color: rgb(27, 29, 35);\n"
+                                      "	border-radius: 5px;\n"
+                                      "	padding: 10px;\n"
+                                      "}\n"
+                                      "QListWidget:hover {\n"
+                                      "	border: 2px solid rgb(64, 71, 88);\n"
+                                      "}\n"
+                                      "QListWidget:focus {\n"
+                                      "	border: 2px solid rgb(91, 101, 124);\n"
+                                      "}")
+        self.checkedOut()
+
+
+        self.userCheckout_Grid.addWidget(self.checkedoutTitle, 0, 0, 1, 1, alignment=Qt.AlignLeft)
+        self.userCheckout_Grid.addWidget(self.checkedoutDisplay, 1, 0, 1, 1, alignment=Qt.AlignLeft)
 
         self.userWidget_verticalLayout.addWidget(self.frame_userTitle)
-
+        self.userWidget_verticalLayout.addWidget(self.frame_userCheckedout)
 
         ################################# END #################################
 
@@ -1480,7 +1505,7 @@ class Ui_MainWindow(object):
 
         self.searchLabel.setText(QCoreApplication.translate("MainWindow", "Manual Search", None))
         self.searchInput.setPlaceholderText(QCoreApplication.translate("MainWindow", "Equipment Name or Keyword", None))
-        self.searchExample.setText(QCoreApplication.translate("MainWindow", "Ex: Atlas Copco Compresser", None))
+        self.searchExample.setText(QCoreApplication.translate("MainWindow", "Ex: Atlas Copco Compressor", None))
         self.searchGo.setText(QCoreApplication.translate("MainWindow", "  Search", None))
 
         self.resultsLabel.setText(QCoreApplication.translate("MainWindow", "Results", None))
@@ -1511,6 +1536,7 @@ class Ui_MainWindow(object):
 
         c = getpass.getuser()
         self.user_name.setText(QCoreApplication.translate("MainWindow", c, None))
+        self.checkedoutTitle.setText(QCoreApplication.translate("MainWindow", "Currently Checked Out Manuals", None))
 
 
     # retranslateUi
@@ -1522,8 +1548,9 @@ class Ui_MainWindow(object):
         self.resultList.clear()
         self.resultList.addItem("*** Add New ***")
 
-        for files in glob.glob(s, recursive=True):
+        for files in glob.glob(s, recursive=False):
             a = files.replace(path, "")
+            a = str.rstrip(a, "\\")
             self.resultList.addItem(a)
 
     def display(self):  # displays the locations and folder of the manuals
@@ -1535,6 +1562,8 @@ class Ui_MainWindow(object):
                 # print("s")
                 t = filename
                 self.displayLocation.setText("Digital Manuals Only")
+            elif s == "null":
+                self.displayLocation.setText("No Location Info")
             else:
                 self.displayLocation.setText("Physical copy at: " + s)
                 t = filename
@@ -1547,7 +1576,7 @@ class Ui_MainWindow(object):
     def selectResult(self):  # what to do when entry is double clicked
         global filename
         t = self.resultList.currentItem().text()
-        filename = t
+        filename = t + "\\"
         self.editEnable.setChecked(False)
         if t != "*** Add New ***":
             self.stackedWidget.setCurrentIndex(1)
@@ -1623,8 +1652,9 @@ class Ui_MainWindow(object):
             self.Return.setEnabled(True)
             c = "Checked out by " + username + " on " + ct
             self.checkout_available.setText(c)
+            self.checkedOut()
         except:
-            warn("Unknown Error (checkout)")    # s
+            warn("Unknown Error (checkout)")
 
     def returnManual(self):     # returns the manual
         try:
@@ -1633,6 +1663,7 @@ class Ui_MainWindow(object):
             self.checkout.setEnabled(True)
             self.Return.setEnabled(False)
             self.checkout_available.setText("Manual is available")
+            self.checkedOut()
         except:
             warn("Unknown Error (checkout)")
 
@@ -1734,7 +1765,26 @@ class Ui_MainWindow(object):
         self.newEquipment.clear()
         self.newLocation.clear()
 
-
+    def checkedOut(self):   # finds all the currently checked out manuals by user
+        self.checkedoutDisplay.clear()
+        s = path + "**\\"
+        b = ""
+        checkoutList = ["", ""]
+        for files in glob.glob(s, recursive=False):
+            v = files + "checkout.txt"
+            try:
+                b = readCheckout(v)
+                checkoutList = str.split(b, ",")
+                b = checkoutList[0]
+            except FileNotFoundError:
+                pass
+            if b != 'available' or "":
+                u = getpass.getuser()
+                if b == u:
+                    a = files.replace(path, "")
+                    a = str.rstrip(a, "\\")
+                    printout = a + " on " + checkoutList[1]
+                    self.checkedoutDisplay.addItem(printout)
 
 
 
@@ -1780,6 +1830,12 @@ def checkout(username, time, file):   # edits a checkout tag file
     f.close()
 
 
+def readCheckout(file):
+    f = open(file, 'r')
+    v = f.read()
+    return v
+
+
 def readLocation(location):  # reads location tag for equipment
     # print(location)
     if os.path.isfile(location) is True:
@@ -1788,7 +1844,7 @@ def readLocation(location):  # reads location tag for equipment
         f.close()
         return v
     else:
-        return "i"
+        return "null"
 
 
 def rename(current, new):  # renames directory
