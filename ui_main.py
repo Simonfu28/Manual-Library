@@ -1291,6 +1291,7 @@ class Ui_MainWindow(object):
 
         self.frame_userTitle = QFrame()
         self.frame_userTitle.setObjectName(u"frame_userTitle")
+        self.frame_userTitle.setMaximumSize(900, 150)
         self.frame_userTitle.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
                                                  "border-radius: 5px;\n"
                                                  "")
@@ -1331,11 +1332,14 @@ class Ui_MainWindow(object):
 
         self.frame_userCheckedout = QFrame()
         self.frame_userCheckedout.setObjectName(u"frame_userCheckedout")
+        self.frame_userCheckedout.setMaximumSize(QSize(900, 325))
         self.frame_userCheckedout.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
                                                  "border-radius: 5px;\n"
                                                  "")
-        self.userCheckout_Grid = QGridLayout(self.frame_userCheckedout)
-        self.userCheckout_Grid.setObjectName(u"frame_userCheckedout")
+        self.userCheckout_vLayout = QVBoxLayout(self.frame_userCheckedout)
+        self.userCheckout_vLayout.setObjectName(u"userCheckout_vLayout")
+        self.userCheckout_HLayout = QHBoxLayout(self.frame_userCheckedout)
+        self.userCheckout_HLayout.setObjectName(u"userCheckout_HLayout")
 
         self.checkedoutTitle = QLabel(self.frame_userCheckedout)
         self.checkedoutTitle.setObjectName(u"checkedoutTitle")
@@ -1344,8 +1348,7 @@ class Ui_MainWindow(object):
 
         self.checkedoutDisplay = QListWidget(self.frame_userCheckedout)
         self.checkedoutDisplay.setObjectName(u"checkedoutDisplay")
-        self.checkedoutDisplay.setMinimumSize(QSize(750, 200))
-        self.checkedoutDisplay.setMaximumSize(QSize(750, 200))
+        self.checkedoutDisplay.setMinimumSize(600, 200)
         self.checkedoutDisplay.setStyleSheet(u"QListWidget {\n"
                                       "	background-color: rgb(27, 29, 35);\n"
                                       "	border-radius: 5px;\n"
@@ -1359,9 +1362,50 @@ class Ui_MainWindow(object):
                                       "}")
         self.checkedOut()
 
+        self.returnbutton_Layout = QVBoxLayout()
+        self.returnbutton_Layout.setObjectName(u"returnbutton_Layout")
+        self.returnOne = QPushButton()
+        self.returnOne.setObjectName(u"returnOne")
+        self.returnOne.setFixedSize(QSize(100, 35))
+        self.returnOne.setStyleSheet(u"QPushButton {\n"
+                                       "	border: 2px solid rgb(52, 59, 72);\n"
+                                       "	border-radius: 5px;	\n"
+                                       "	background-color: rgb(27, 29, 35);\n"
+                                       "}\n"
+                                       "QPushButton:hover {\n"
+                                       "	background-color: rgb(57, 65, 80);\n"
+                                       "	border: 2px solid rgb(61, 70, 86);\n"
+                                       "}\n"
+                                       "QPushButton:pressed {	\n"
+                                       "	background-color: rgb(35, 40, 49);\n"
+                                       "	border: 2px solid rgb(43, 50, 61);\n"
+                                       "}")
+        self.returnAll = QPushButton()
+        self.returnAll.setObjectName(u"returnAll")
+        self.returnAll.setFixedSize(QSize(100, 35))
+        self.returnAll.setStyleSheet(u"QPushButton {\n"
+                                       "	border: 2px solid rgb(52, 59, 72);\n"
+                                       "	border-radius: 5px;	\n"
+                                       "	background-color: rgb(27, 29, 35);\n"
+                                       "}\n"
+                                       "QPushButton:hover {\n"
+                                       "	background-color: rgb(57, 65, 80);\n"
+                                       "	border: 2px solid rgb(61, 70, 86);\n"
+                                       "}\n"
+                                       "QPushButton:pressed {	\n"
+                                       "	background-color: rgb(35, 40, 49);\n"
+                                       "	border: 2px solid rgb(43, 50, 61);\n"
+                                       "}")
+        self.returnOne.clicked.connect(self.ReturnOne)
+        self.returnAll.clicked.connect(self.ReturnAll)
+        self.returnbutton_Layout.addWidget(self.returnOne)
+        self.returnbutton_Layout.addWidget(self.returnAll)
+        self.userCheckout_HLayout.addWidget(self.checkedoutDisplay)
+        self.userCheckout_HLayout.addLayout(self.returnbutton_Layout)
 
-        self.userCheckout_Grid.addWidget(self.checkedoutTitle, 0, 0, 1, 1, alignment=Qt.AlignLeft)
-        self.userCheckout_Grid.addWidget(self.checkedoutDisplay, 1, 0, 1, 1, alignment=Qt.AlignLeft)
+
+        self.userCheckout_vLayout.addWidget(self.checkedoutTitle)
+        self.userCheckout_vLayout.addLayout(self.userCheckout_HLayout)
 
         self.userWidget_verticalLayout.addWidget(self.frame_userTitle)
         self.userWidget_verticalLayout.addWidget(self.frame_userCheckedout)
@@ -1537,6 +1581,8 @@ class Ui_MainWindow(object):
         c = getpass.getuser()
         self.user_name.setText(QCoreApplication.translate("MainWindow", c, None))
         self.checkedoutTitle.setText(QCoreApplication.translate("MainWindow", "Currently Checked Out Manuals", None))
+        self.returnOne.setText(QCoreApplication.translate("MainWindow", "Return Manual", None))
+        self.returnAll.setText(QCoreApplication.translate("MainWindow", "Return All", None))
 
 
     # retranslateUi
@@ -1659,7 +1705,7 @@ class Ui_MainWindow(object):
     def returnManual(self):     # returns the manual
         try:
             t = path + filename + "checkout.txt"
-            checkout("available", "", t)
+            checkout("available", "0", t)
             self.checkout.setEnabled(True)
             self.Return.setEnabled(False)
             self.checkout_available.setText("Manual is available")
@@ -1785,6 +1831,49 @@ class Ui_MainWindow(object):
                     a = str.rstrip(a, "\\")
                     printout = a + " on " + checkoutList[1]
                     self.checkedoutDisplay.addItem(printout)
+
+    def ReturnOne(self):    # returns selected manual in users tab
+        try:
+            a = self.checkedoutDisplay.currentItem().text()
+        except AttributeError:
+            a = False
+        if a != False:
+            a = str.split(a, " on")
+            b = a[0]
+            b = path + b + "\\checkout.txt"
+            try:
+                checkout("available", "0", b)
+                self.checkout.setEnabled(True)
+                self.Return.setEnabled(False)
+                self.checkout_available.setText("Manual is available")
+                self.checkedOut()
+            except:
+                warn("Unknown Error (checkout)")
+
+    def ReturnAll(self):    # returns all the manuals in the users tab
+        items = []
+        try:
+            for index in range(self.checkedoutDisplay.count()):
+                a = self.checkedoutDisplay.item(index).text()
+                a = str.split(a, " on")
+                b = a[0]
+                b = path + b + "\\checkout.txt"
+                items.append(b)
+        except AttributeError:
+            items[0] = False
+
+        if items[0] != False:
+            length = len(items)
+            for i in range(length):
+                try:
+                    checkout("available", "0", items[i])
+                    self.checkout.setEnabled(True)
+                    self.Return.setEnabled(False)
+                    self.checkout_available.setText("Manual is available")
+                    self.checkedOut()
+                except:
+                    warn("Unknown Error (checkout)")
+
 
 
 
