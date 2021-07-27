@@ -1276,10 +1276,10 @@ class Ui_MainWindow(object):
         self.newEdit_grid.addWidget(self.newLocation, 3, 0, 1, 1, alignment=Qt.AlignLeft)
         self.newEdit_grid.addLayout(self.newEditConfirm_HLayout, 4, 1, 1, 1, alignment=Qt.AlignRight)
 
-        self.newWidget_verticalLayout.addSpacing(80)
         self.newWidget_verticalLayout.addWidget(self.frame_newTitle)
+        self.newWidget_verticalLayout.addSpacing(15)
         self.newWidget_verticalLayout.addWidget(self.frame_newEdit)
-        self.newWidget_verticalLayout.addSpacing(100)
+        self.newWidget_verticalLayout.addSpacing(300)
         ################################# END #################################
 
 
@@ -1291,7 +1291,7 @@ class Ui_MainWindow(object):
 
         self.frame_userTitle = QFrame()
         self.frame_userTitle.setObjectName(u"frame_userTitle")
-        self.frame_userTitle.setMaximumSize(900, 150)
+        self.frame_userTitle.setMaximumSize(900, 100)
         self.frame_userTitle.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
                                                  "border-radius: 5px;\n"
                                                  "")
@@ -1332,7 +1332,7 @@ class Ui_MainWindow(object):
 
         self.frame_userCheckedout = QFrame()
         self.frame_userCheckedout.setObjectName(u"frame_userCheckedout")
-        self.frame_userCheckedout.setMaximumSize(QSize(900, 325))
+        self.frame_userCheckedout.setMaximumSize(QSize(900, 150))
         self.frame_userCheckedout.setStyleSheet(u"background-color: rgb(39, 44, 54);\n"
                                                  "border-radius: 5px;\n"
                                                  "")
@@ -1348,7 +1348,7 @@ class Ui_MainWindow(object):
 
         self.checkedoutDisplay = QListWidget(self.frame_userCheckedout)
         self.checkedoutDisplay.setObjectName(u"checkedoutDisplay")
-        self.checkedoutDisplay.setMinimumSize(600, 200)
+        self.checkedoutDisplay.setMinimumSize(600, 75)
         self.checkedoutDisplay.setStyleSheet(u"QListWidget {\n"
                                       "	background-color: rgb(27, 29, 35);\n"
                                       "	border-radius: 5px;\n"
@@ -1403,12 +1403,16 @@ class Ui_MainWindow(object):
         self.userCheckout_HLayout.addWidget(self.checkedoutDisplay)
         self.userCheckout_HLayout.addLayout(self.returnbutton_Layout)
 
-
+        self.userCheckout_vLayout.addSpacing(10)
         self.userCheckout_vLayout.addWidget(self.checkedoutTitle)
+        self.userCheckout_vLayout.addSpacing(20)
         self.userCheckout_vLayout.addLayout(self.userCheckout_HLayout)
+        self.userCheckout_vLayout.addSpacing(10)
 
         self.userWidget_verticalLayout.addWidget(self.frame_userTitle)
+        self.userWidget_verticalLayout.addSpacing(15)
         self.userWidget_verticalLayout.addWidget(self.frame_userCheckedout)
+        self.userWidget_verticalLayout.addSpacing(280)
 
         ################################# END #################################
 
@@ -1529,7 +1533,7 @@ class Ui_MainWindow(object):
 
     # setupUi
 
-    def retranslateUi(self, MainWindow):
+    def retranslateUi(self, MainWindow):        # retranslateUi
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.btn_toggle_menu.setText("")
         self.label_title_bar_top.setText(QCoreApplication.translate("MainWindow", u"Main Window - Base", None))
@@ -1584,8 +1588,6 @@ class Ui_MainWindow(object):
         self.returnOne.setText(QCoreApplication.translate("MainWindow", "Return Manual", None))
         self.returnAll.setText(QCoreApplication.translate("MainWindow", "Return All", None))
 
-
-    # retranslateUi
 
     def searchClick(self):  # displays search results
         global filename, path
@@ -1852,6 +1854,7 @@ class Ui_MainWindow(object):
 
     def ReturnAll(self):    # returns all the manuals in the users tab
         items = []
+        items.append("False")
         try:
             for index in range(self.checkedoutDisplay.count()):
                 a = self.checkedoutDisplay.item(index).text()
@@ -1860,7 +1863,7 @@ class Ui_MainWindow(object):
                 b = path + b + "\\checkout.txt"
                 items.append(b)
         except AttributeError:
-            items[0] = False
+            items.append("False")
 
         if items[0] != False:
             length = len(items)

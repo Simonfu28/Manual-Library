@@ -14,6 +14,7 @@ from configparser import ConfigParser
 import getpass
 
 
+
 config = ConfigParser()
 config.read('config.cfg')
 path = config.get("Settings", 'systempath')
